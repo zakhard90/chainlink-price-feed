@@ -1,0 +1,20 @@
+{
+  "name": "chainlink-price-feed",
+  "version": "1.0.0",
+  "description": "A PoC project involving Chainlink Price Feed functionality",
+  "scripts": {
+    "test": "npx hardhat test"
+  },
+  "author": "Zakhar Deyneka",
+  "license": "MIT",
+  "dependencies": {
+    "@chainlink/contracts": "1.3.0",
+    "@openzeppelin/contracts": "4.6.0",
+    "hardhat": "2.22.17"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.12",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0"
+  }
+}
