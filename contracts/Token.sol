@@ -20,7 +20,7 @@ contract Token is ERC20, AccessControl {
     }
 
     function decimals() public pure override returns (uint8) {
-        return 2;
+        return 18;
     }
 
     function allowMintTo(address to) public onlyRole(OWNER_ROLE) {

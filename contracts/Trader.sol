@@ -12,7 +12,7 @@ contract Trader is Ownable {
     uint256 public constant MAX_PURCHASE = 100 ether;
     AggregatorV3Interface immutable priceFeed;
     TokenInterface public minter;
-    uint256 public tokenPrice = 200;
+    uint256 public tokenPrice = 2 * 1e18;
 
     error InvalidTokenAddress(address);
     error InvalidFeedAddress(address);
@@ -64,7 +64,7 @@ contract Trader is Ownable {
     function tokenAmount(uint256 amountETH) public view returns (uint256) {
         uint256 ethUsd = uint256(getPriceFeedData());
         uint256 amountUSD = (amountETH * ethUsd) / 1e18;
-        return (amountUSD * 1e2) / tokenPrice;
+        return (amountUSD * 1e18) / tokenPrice;
     }
 
     receive() external payable {

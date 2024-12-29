@@ -15,9 +15,9 @@ describe("Trader Contract", function () {
     let buyer: SignerWithAddress;
     let addr2: SignerWithAddress;
   
-    const INITIAL_TOKEN_PRICE = 200; // $2.00 with 2 decimals
+    const INITIAL_TOKEN_PRICE = BigInt(2 * 1e18); // $2.00 with 18 decimals
     const ETH_PRICE = ethers.parseUnits("3800", 8); // $3800 USD/ETH with 8 decimals
-    const MAX_PURCHASE = ethers.parseEther("100"); // 1 ETH
+    const MAX_PURCHASE = ethers.parseEther("100"); // 100 ETH
 
     [owner, buyer, addr2] = await ethers.getSigners();
 
@@ -57,7 +57,7 @@ describe("Trader Contract", function () {
 
     it("Should return correct token decimals", async function() {
       const {token} = await loadFixture(deployFixture);
-      expect(await token.decimals()).to.equal(2);
+      expect(await token.decimals()).to.equal(18);
     });
 
     it("Should revert if token address is zero", async function () {
@@ -113,7 +113,7 @@ describe("Trader Contract", function () {
   describe("Token Price Updates", function () {
     it("Should update token price", async function () {
       const {trader, INITIAL_TOKEN_PRICE} = await loadFixture(deployFixture);
-      const newPrice = 300; // $3.00
+      const newPrice = BigInt(3 * 1e18); // $3.00
       await expect(trader.updateTokenPrice(newPrice))
         .to.emit(trader, "TokenPriceUpdated")
         .withArgs(INITIAL_TOKEN_PRICE, newPrice);
@@ -131,7 +131,7 @@ describe("Trader Contract", function () {
     it("Should revert if caller is not owner", async function () {
       const {trader, buyer} = await loadFixture(deployFixture);
       await expect(
-        trader.connect(buyer).updateTokenPrice(300)
+        trader.connect(buyer).updateTokenPrice(BigInt(3 * 1e18))
       ).to.be.revertedWith("Ownable: caller is not the owner");
     });
   });
@@ -139,9 +139,7 @@ describe("Trader Contract", function () {
   describe("Token Amount Calculation", function () {
     it("Should calculate correct token amount", async function () {
       const {trader} = await loadFixture(deployFixture);
-      const ethAmount = ethers.parseEther("1"); // 1 ETH
-      // 1 ETH * $3800 = $3800 USD
-      // $3800 * 100 / 200 = 1900 tokens with 8 decimals
+      const ethAmount = ethers.parseEther("1");
       const expectedTokens = 1900 * 1e8;
       expect(await trader.tokenAmount(ethAmount)).to.equal(expectedTokens);
     });
@@ -154,12 +152,10 @@ describe("Trader Contract", function () {
     });
 
     it("Should handle price updates correctly", async function () {
-      const {trader, buyer} = await loadFixture(deployFixture);
+      const {trader} = await loadFixture(deployFixture);
       const ethAmount = ethers.parseEther("1");
-      const newPrice = 400; // $4.00
+      const newPrice = BigInt(4 * 1e18); // $4.00
       await trader.updateTokenPrice(newPrice);
-      // 1 ETH * $3800 = $3800 USD
-      // $3800 * 100 / 400 = 950 tokens with 8 decimals
       const expectedTokens = 950 * 1e8;
       expect(await trader.tokenAmount(ethAmount)).to.equal(expectedTokens);
     });
@@ -209,12 +205,10 @@ describe("Trader Contract", function () {
 
     it("Should handle ETH price updates", async function () {
       const {trader, mockPriceFeed} = await loadFixture(deployFixture);
-      const newEthPrice = ethers.parseUnits("2000", 8); // $2000 USD/ETH
+      const newEthPrice = ethers.parseUnits("2000", 8);
       await mockPriceFeed.setPrice(newEthPrice);
       
       const ethAmount = ethers.parseEther("1");
-      // 1 ETH * $2000 = $2000 USD
-      // $2000 * 100 / 200 = 1000 tokens
       const expectedTokens = 1000 * 1e8;
       expect(await trader.tokenAmount(ethAmount)).to.equal(expectedTokens);
     });

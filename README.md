@@ -38,7 +38,7 @@ If deployed to Sepolia testnet use this price feed:
 
 ### Contract Parameters
 - Solidity Version: 0.8.28
-- Token Price: Initially set to 200 (2 USD)
+- Token Price: Initially set to 2 * 1e18 (2 USD)
 - Maximum Purchase: 100 ETH
 
 ### Events
