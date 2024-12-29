@@ -73,5 +73,13 @@ Allows owner to withdraw accumulated ETH.
    - Chainlink ETH/USD price feed address
 3. Set initial token price if different from default
 
+To deploy the Token and the Trader contract, configure the `.env` file and run:
+
+```bash
+npx hardhat clean
+npx hardhat compile
+npx hardhat run scripts/deploy.ts --network sepolia
+```
+
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
