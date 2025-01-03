@@ -80,6 +80,18 @@ npx hardhat clean
 npx hardhat compile
 npx hardhat run scripts/deploy.ts --network sepolia
 ```
+In case you want to verify the contracts on Etherscan, add the ETHERSCAN_API_KEY to the .env file and run:
+
+```bash
+npx hardhat verify --network sepolia --contract contracts/Token.sol:Token <DEPLOYED_CONTRACT_ADDRESS>
+```
+
+```bash
+npx hardhat verify --network sepolia --contract contracts/Trader.sol:Trader <DEPLOYED_CONTRACT_ADDRESS> <CONSTRUCTOR_ARG_1> <CONSTRUCTOR_ARG_2>
+```
+Note that constructor arguments are the addresses of:
+1. Token contract
+2. Price feed contract
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
